@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0" />
+        
+        <style type="text/css">
+            * {
+                outline: 0px solid transparent;
+                -webkit-font-smoothing: antialiased;
+                font: 14px -apple-system-body, 'Helvetica Neue', Helvetica, sans-serif;
+            }
+        body {
+            padding: 14px;
+            margin: 0;
+            
+        }
+        html {
+            height: 100%;
+        }
+        
+        body {
+            line-height: 1.35;
+            padding: 24px;
+            min-height: 100%;
+        }
+        #editor {
+            width:100%;
+            height:100%;
+            min-height:400px;
+        }
+        </style>
+    </head>
+    <body>
+        <div id="editor" contenteditable="true">{BODY}</div>
+        
+        <script type="text/javascript">
+            (function() {
+                 var onInput = function (event) {
+                     window.webkit.messageHandlers['editor'].postMessage(event.currentTarget.innerHTML);
+                 };
+             
+                 document.getElementById('editor').addEventListener('input', onInput);
+             })();
+        </script>
+    </body>
+</html>

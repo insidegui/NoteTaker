@@ -1,0 +1,5 @@
+github "insidegui/IGListKit" "4afbc24fc03ee57f7b4879960307a8ae22f3cb14"
+github "ReactiveX/RxSwift" "3.2.0"
+github "realm/realm-cocoa" "v2.4.3"
+github "RxSwiftCommunity/RxOptional" "3.1.3"
+github "RxSwiftCommunity/RxRealm" "0.5.1"
