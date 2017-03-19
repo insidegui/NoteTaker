@@ -52,11 +52,11 @@ public final class NotesSyncEngine: NSObject {
         
         super.init()
         
-        // Do initial cloud fetch
-        fetchCloudKitNotes()
-        
         // Fetch notifications not processed yet
         fetchServerNotifications()
+        
+        // Do initial cloud fetch
+        fetchCloudKitNotes()
         
         // Sync magic
         subscribeToLocalDatabaseChanges()
@@ -238,10 +238,6 @@ public final class NotesSyncEngine: NSObject {
     }
     
     private func fetchServerNotifications() {
-        // Lock syncing
-        guard !isSyncing else { return }
-        isSyncing = true
-        
         let operation = CKFetchNotificationChangesOperation(previousServerChangeToken: previousChangeToken)
         
         // This will hold the identifiers for every changed record
@@ -278,8 +274,6 @@ public final class NotesSyncEngine: NSObject {
                     self?.fetchServerNotifications()
                 }
                 
-                self?.isSyncing = false
-                
                 return
             }
             
@@ -311,8 +305,6 @@ public final class NotesSyncEngine: NSObject {
         container.add(operation)
     }
     
-    private var isSyncing = false
-    
     /// Download a list of records from CloudKit and update the local database accordingly
     private func consolidateUpdatedCloudNotes(with identifiers: [CKRecordID]) {
         let operation = CKFetchRecordsOperation(recordIDs: identifiers)
@@ -328,10 +320,6 @@ public final class NotesSyncEngine: NSObject {
             records.values.forEach { record in
                 self?.processFetchedNote(record)
             }
-        }
-        
-        operation.completionBlock = { [weak self] in
-            self?.isSyncing = false
         }
         
         privateDatabase.add(operation)
